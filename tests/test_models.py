@@ -189,3 +189,20 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.category, category)
+
+    def test_update_empty_id_product(self):
+        """It should NOT update a product with empty ID field"""
+        product = ProductFactory()
+        product.id = None
+        product.create()
+        self.assertIsNotNone(product.id)
+        product.id = None
+        with self.assertRaises(Exception):
+            product.update()
+
+    def test_deserialize_a_product(self):
+        """It should Create a xxx product and assert that it exists"""
+        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
+        data = '{"name"="Pippo"}'
+        with self.assertRaises(Exception):
+            product.deserialize(data)
